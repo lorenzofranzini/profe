@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Il Serpente Olimpico</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --oro: #c9a84c;
+    --oro-chiaro: #f0d080;
+    --oro-scuro: #8b6914;
+    --marmo: #f5f0e8;
+    --pietra: #2a2318;
+    --pietra-media: #3d3426;
+    --pietra-chiara: #5a4f3a;
+    --rosso-pompei: #8b2a1a;
+    --rosso-vivo: #c0392b;
+    --azzurro-egeo: #1a3a5c;
+    --verde-serpente: #2d6e3f;
+    --verde-chiaro: #4a9e60;
+    --verde-testa: #1a4a28;
+    --ombra: rgba(0,0,0,0.7);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--pietra);
+    font-family: 'IM Fell English', serif;
+    color: var(--marmo);
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  /* Sfondo mosaico animato */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(201,168,76,0.03) 20px, rgba(201,168,76,0.03) 21px),
+      repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(201,168,76,0.03) 20px, rgba(201,168,76,0.03) 21px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(139,41,20,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(26,58,92,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.4) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    position: relative;
+  }
+
+  .titolo-principale {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 700;
+    color: var(--oro);
+    letter-spacing: 4px;
+    text-shadow:
+      0 0 20px rgba(201,168,76,0.5),
+      0 2px 4px rgba(0,0,0,0.8);
+    line-height: 1.1;
+  }
+
+  .titolo-sub {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(10px, 1.5vw, 14px);
+    color: var(--oro-chiaro);
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .decorazione-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 6px 0;
+    color: var(--oro);
+    font-size: 20px;
+    opacity: 0.7;
+  }
+
+  .linea-oro {
+    height: 1px;
+    flex: 1;
+    max-width: 80px;
+    background: linear-gradient(90deg, transparent, var(--oro), transparent);
+  }
+
+  /* Pannello stats */
+  .stats-panel {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .stat-box {
+    text-align: center;
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    padding: 6px 18px;
+    position: relative;
+  }
+
+  .stat-box::before, .stat-box::after {
+    content: '◆';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--oro);
+    font-size: 8px;
+    opacity: 0.6;
+  }
+  .stat-box::before { left: -6px; }
+  .stat-box::after { right: -6px; }
+
+  .stat-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--oro);
+    text-transform: uppercase;
+    opacity: 0.8;
+  }
+
+  .stat-value {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    color: var(--oro-chiaro);
+    text-shadow: 0 0 10px rgba(201,168,76,0.4);
+    line-height: 1.2;
+  }
+
+  /* Area di gioco */
+  .game-wrapper {
+    position: relative;
+  }
+
+  .game-border-outer {
+    background: linear-gradient(135deg, var(--oro-scuro), var(--oro), var(--oro-scuro), var(--oro));
+    padding: 3px;
+    border-radius: 2px;
+    box-shadow:
+      0 0 30px rgba(201,168,76,0.3),
+      0 0 60px rgba(201,168,76,0.1),
+      inset 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  .game-border-inner {
+    background: var(--pietra-media);
+    padding: 6px;
+    border: 2px solid rgba(201,168,76,0.15);
+  }
+
+  canvas {
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  /* Angoli decorativi */
+  .corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    z-index: 2;
+  }
+  .corner svg { width: 100%; height: 100%; }
+  .corner-tl { top: -2px; left: -2px; }
+  .corner-tr { top: -2px; right: -2px; transform: scaleX(-1); }
+  .corner-bl { bottom: -2px; left: -2px; transform: scaleY(-1); }
+  .corner-br { bottom: -2px; right: -2px; transform: scale(-1,-1); }
+
+  /* Overlay schermate */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(20,16,10,0.92);
+    z-index: 10;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .overlay.hidden { display: none; }
+
+  .overlay-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(16px, 3vw, 28px);
+    color: var(--oro);
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(201,168,76,0.6);
+  }
+
+  .overlay-sub {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    color: var(--marmo);
+    opacity: 0.7;
+    font-size: 13px;
+    margin-bottom: 20px;
+    max-width: 280px;
+    line-height: 1.6;
+  }
+
+  .btn-olimpico {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--pietra);
+    background: linear-gradient(135deg, var(--oro-chiaro), var(--oro), var(--oro-scuro));
+    border: none;
+    padding: 10px 28px;
+    cursor: pointer;
+    border-radius: 2px;
+    box-shadow: 0 4px 15px rgba(201,168,76,0.4);
+    transition: all 0.2s;
+    margin: 4px;
+  }
+
+  .btn-olimpico:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(201,168,76,0.6);
+  }
+
+  .separatore {
+    color: var(--oro);
+    opacity: 0.4;
+    font-size: 18px;
+    margin: 10px 0;
+    letter-spacing: 8px;
+  }
+
+  /* Messaggio evento */
+  .evento-msg {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--oro-chiaro);
+    background: rgba(20,16,10,0.85);
+    border: 1px solid rgba(201,168,76,0.4);
+    padding: 6px 16px;
+    border-radius: 2px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .evento-msg.show { opacity: 1; }
+
+  /* Controlli mobile */
+  .dpad {
+    display: none;
+    grid-template-columns: repeat(3, 44px);
+    grid-template-rows: repeat(3, 44px);
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .dpad-btn {
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 4px;
+    color: var(--oro);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.1s;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .dpad-btn:active { background: rgba(201,168,76,0.3); }
+  .dpad-center { grid-column: 2; grid-row: 2; font-size: 12px; opacity: 0.3; }
+
+  /* Footer */
+  .footer-testo {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: var(--oro);
+    opacity: 0.35;
+    text-align: center;
+  }
+
+  /* Schermata morte */
+  .morte-dettagli {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    color: var(--rosso-vivo);
+    font-size: 14px;
+    margin: 8px 0 16px;
+  }
+
+  .punteggio-finale {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 36px;
+    color: var(--oro);
+    text-shadow: 0 0 20px rgba(201,168,76,0.5);
+  }
+
+  .record-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--pietra);
+    background: var(--oro);
+    padding: 3px 10px;
+    margin-bottom: 12px;
+    display: none;
+  }
+
+  @media (max-width: 600px) or (pointer: coarse) {
+    .dpad { display: grid; }
+  }
+
+  @media (hover: none) {
+    .dpad { display: grid; }
+  }
+
+  /* Animazioni */
+  @keyframes pulse-oro {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+  }
+
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .overlay-title {
+    animation: fadeInDown 0.4s ease;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="titolo-principale">Il Serpente Olimpico</div>
+    <div class="decorazione-header">
+      <div class="linea-oro"></div>
+      <span>⚡</span>
+      <div class="linea-oro"></div>
+    </div>
+    <div class="titolo-sub">Pythōn · Guardiano di Delfi</div>
+  </div>
+
+  <div class="stats-panel">
+    <div class="stat-box">
+      <div class="stat-label">Gloria</div>
+      <div class="stat-value" id="score">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Record</div>
+      <div class="stat-value" id="high-score">0</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Livello</div>
+      <div class="stat-value" id="level">I</div>
+    </div>
+  </div>
+
+  <div class="game-wrapper">
+    <div class="game-border-outer">
+      <div class="game-border-inner" style="position:relative;">
+
+        <!-- Angoli decorativi -->
+        <div class="corner corner-tl">
+          <svg viewBox="0 0 30 30" fill="none">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M2 12 Q8 8 12 2" stroke="#c9a84c" stroke-width="1" fill="none" opacity="0.5"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="corner corner-tr">
+          <svg viewBox="0 0 30 30" fill="none">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="corner corner-bl">
+          <svg viewBox="0 0 30 30" fill="none">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+        <div class="corner corner-br">
+          <svg viewBox="0 0 30 30" fill="none">
+            <path d="M2 28 L2 2 L28 2" stroke="#c9a84c" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="2" cy="2" r="2" fill="#c9a84c"/>
+          </svg>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <!-- Overlay inizio -->
+        <div class="overlay" id="overlay-start">
+          <div class="overlay-title">Python, Figlio del Caos</div>
+          <div class="separatore">✦ ✦ ✦</div>
+          <div class="overlay-sub">
+            Apollo ha inviato il suo serpente sacro a divorare le offerte degli dei.<br>
+            Guida Python tra i doni olimpici — più divori, più grande diventi.
+          </div>
+          <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:3px; color:var(--oro); opacity:0.7; margin-bottom:16px;">
+            WASD · FRECCE · DPAD
+          </div>
+          <button class="btn-olimpico" id="btn-start">⚡ Inizia il Rito ⚡</button>
+        </div>
+
+        <!-- Overlay pausa -->
+        <div class="overlay hidden" id="overlay-pause">
+          <div class="overlay-title">Il Rito è Sospeso</div>
+          <div class="overlay-sub">Gli dei attendono il tuo ritorno, o Guardiano.</div>
+          <button class="btn-olimpico" id="btn-resume">▶ Riprendi</button>
+        </div>
+
+        <!-- Overlay game over -->
+        <div class="overlay hidden" id="overlay-gameover">
+          <div class="overlay-title">Python è Caduto</div>
+          <div class="morte-dettagli" id="morte-msg">Trafitto dalla lancia di Apollo</div>
+          <div class="punteggio-finale" id="final-score">0</div>
+          <div style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--oro);opacity:0.6;margin-bottom:4px;">PUNTI GLORIA</div>
+          <div class="record-badge" id="record-badge">✦ NUOVO RECORD ✦</div>
+          <button class="btn-olimpico" id="btn-restart">↻ Rinasci dalle Ceneri</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Messaggio evento -->
+    <div class="evento-msg" id="evento-msg"></div>
+  </div>
+
+  <!-- D-Pad mobile -->
+  <div class="dpad" id="dpad">
+    <div></div>
+    <button class="dpad-btn" id="d-up">▲</button>
+    <div></div>
+    <button class="dpad-btn" id="d-left">◀</button>
+    <div class="dpad-center">●</div>
+    <button class="dpad-btn" id="d-right">▶</button>
+    <div></div>
+    <button class="dpad-btn" id="d-down">▼</button>
+    <div></div>
+  </div>
+
+  <div class="footer-testo">⚡ PYTHŌN · IL SERPENTE DI APOLLO · DELFI ⚡</div>
+
+</div>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// Dimensioni responsive
+function calcDims() {
+  const maxW = Math.min(window.innerWidth - 60, 520);
+  const maxH = Math.min(window.innerHeight - 280, 440);
+  const size = Math.min(maxW, maxH);
+  const GRID = 20;
+  const cols = Math.floor(size / GRID);
+  const rows = Math.floor((size * 0.75) / GRID);
+  return { cols, rows, GRID, W: cols * GRID, H: rows * GRID };
+}
+
+let { cols, rows, GRID, W, H } = calcDims();
+canvas.width = W;
+canvas.height = H;
+
+// Palette
+const COLORS = {
+  bgDark:      '#1e1a12',
+  bgGrid:      '#241f14',
+  gridLine:    'rgba(201,168,76,0.06)',
+  snakeHead:   '#1a4a28',
+  snakeBody:   '#2d6e3f',
+  snakeAccent: '#4a9e60',
+  snakeScale:  '#1f5530',
+  snakeEye:    '#f0d080',
+  snakeTongue: '#c0392b',
+  food:        { ambrosia: '#f0d080', calice: '#c9a84c', oliva: '#6b8f47', fiore: '#c45c8a', fulmine: '#e8e840' },
+  foodGlow:    { ambrosia: 'rgba(240,208,128,0.4)', calice: 'rgba(201,168,76,0.4)', oliva: 'rgba(107,143,71,0.4)', fiore: 'rgba(196,92,138,0.4)', fulmine: 'rgba(232,232,64,0.4)' },
+  oro:         '#c9a84c',
+  marmo:       '#f5f0e8',
+  rosso:       '#8b2a1a',
+};
+
+// Tipi di cibo con icone e punti
+const FOOD_TYPES = [
+  { tipo: 'ambrosia', nome: 'Ambrosia', punti: 10, simbolo: '✦', msg: 'Ambrosia degli dei! +10' },
+  { tipo: 'calice',   nome: 'Calice d\'oro', punti: 15, simbolo: '♆', msg: 'Calice di Dioniso! +15' },
+  { tipo: 'oliva',    nome: 'Ramo d\'ulivo', punti: 8,  simbolo: '✿', msg: 'Dono di Atena! +8' },
+  { tipo: 'fiore',    nome: 'Fiore di loto', punti: 20, simbolo: '✾', msg: 'Fiore sacro! +20' },
+  { tipo: 'fulmine',  nome: 'Fulmine di Zeus', punti: 30, simbolo: '⚡', msg: 'FULMINE DI ZEUS! +30' },
+];
+
+// Stato di gioco
+let snake, dir, nextDir, food, score, hiScore, level, speed, gameLoop, alive, paused, frame;
+let particles = [];
+let bgStars = [];
+let templeColumns = [];
+
+// Genera stelle/decorazioni di sfondo
+function initBg() {
+  bgStars = [];
+  for (let i = 0; i < 12; i++) {
+    bgStars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.5,
+      a: Math.random(),
+      da: (Math.random() - 0.5) * 0.01
+    });
+  }
+  templeColumns = [];
+  const numCols = Math.floor(W / 60);
+  for (let i = 0; i < numCols; i++) {
+    templeColumns.push({ x: i * 60 + 30 });
+  }
+}
+
+function initGame() {
+  const cx = Math.floor(cols / 2);
+  const cy = Math.floor(rows / 2);
+  snake = [
+    { x: cx, y: cy },
+    { x: cx - 1, y: cy },
+    { x: cx - 2, y: cy },
+    { x: cx - 3, y: cy },
+  ];
+  dir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
+  score = 0;
+  level = 1;
+  speed = 150;
+  alive = true;
+  paused = false;
+  frame = 0;
+  particles = [];
+  updateUI();
+  spawnFood();
+}
+
+function spawnFood() {
+  const tipo = Math.random() < 0.06 ? FOOD_TYPES[4] :
+               Math.random() < 0.12 ? FOOD_TYPES[3] :
+               Math.random() < 0.3  ? FOOD_TYPES[2] :
+               Math.random() < 0.5  ? FOOD_TYPES[1] : FOOD_TYPES[0];
+  let pos;
+  do {
+    pos = { x: Math.floor(Math.random() * cols), y: Math.floor(Math.random() * rows) };
+  } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+  food = { ...pos, ...tipo, pulse: 0 };
+}
+
+function updateUI() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('high-score').textContent = hiScore || 0;
+  const romani = ['I','II','III','IV','V','VI','VII','VIII','IX','X'];
+  document.getElementById('level').textContent = romani[Math.min(level - 1, 9)];
+}
+
+const MORTI = [
+  'Trafitto dalla lancia di Apollo',
+  'Inghiottito dal Chaos primordiale',
+  'Colpito dal fulmine di Zeus',
+  'Divorato dall\'Idra di Lerna',
+  'Trasformato in pietra da Medusa',
+  'Spedito nell\'Ade da Ermes',
+];
+
+function gameOver() {
+  alive = false;
+  clearInterval(gameLoop);
+  if (score > (hiScore || 0)) {
+    hiScore = score;
+    document.getElementById('record-badge').style.display = 'block';
+  } else {
+    document.getElementById('record-badge').style.display = 'none';
+  }
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('morte-msg').textContent = MORTI[Math.floor(Math.random() * MORTI.length)];
+  document.getElementById('overlay-gameover').classList.remove('hidden');
+  updateUI();
+}
+
+function step() {
+  if (!alive || paused) return;
+  frame++;
+
+  dir = { ...nextDir };
+  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+  // Muri
+  if (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows) {
+    spawnParticles(snake[0].x * GRID + GRID/2, snake[0].y * GRID + GRID/2, COLORS.rosso, 20);
+    drawFrame();
+    setTimeout(gameOver, 400);
+    alive = false;
+    return;
+  }
+  // Autointersezione
+  if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    spawnParticles(snake[0].x * GRID + GRID/2, snake[0].y * GRID + GRID/2, COLORS.rosso, 20);
+    drawFrame();
+    setTimeout(gameOver, 400);
+    alive = false;
+    return;
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    score += food.punti;
+    spawnParticles(food.x * GRID + GRID/2, food.y * GRID + GRID/2, COLORS.food[food.tipo], 16);
+    mostraEvento(food.msg);
+    // Aumento livello
+    const newLevel = Math.floor(score / 50) + 1;
+    if (newLevel > level) {
+      level = newLevel;
+      speed = Math.max(60, 150 - (level - 1) * 10);
+      clearInterval(gameLoop);
+      gameLoop = setInterval(step, speed);
+      mostraEvento('LIVELLO ' + ['I','II','III','IV','V','VI','VII','VIII','IX','X'][Math.min(level-1,9)] + ' — Gli dei ti guardano!');
+    }
+    updateUI();
+    spawnFood();
+  } else {
+    snake.pop();
+  }
+
+  drawFrame();
+}
+
+// ---- RENDERING ----
+
+function drawFrame() {
+  ctx.clearRect(0, 0, W, H);
+  drawBg();
+  updateParticles();
+  drawParticles();
+  drawFood();
+  drawSnake();
+}
+
+function drawBg() {
+  // Sfondo
+  ctx.fillStyle = COLORS.bgDark;
+  ctx.fillRect(0, 0, W, H);
+
+  // Griglia mosaico
+  ctx.strokeStyle = COLORS.gridLine;
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x <= cols; x++) {
+    ctx.beginPath(); ctx.moveTo(x * GRID, 0); ctx.lineTo(x * GRID, H); ctx.stroke();
+  }
+  for (let y = 0; y <= rows; y++) {
+    ctx.beginPath(); ctx.moveTo(0, y * GRID); ctx.lineTo(W, y * GRID); ctx.stroke();
+  }
+
+  // Stelle animate
+  const t = Date.now() * 0.001;
+  bgStars.forEach(s => {
+    s.a += s.da;
+    if (s.a < 0.1 || s.a > 0.9) s.da *= -1;
+    ctx.save();
+    ctx.globalAlpha = s.a * 0.4;
+    ctx.fillStyle = COLORS.oro;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Bordo interno decorativo
+  ctx.strokeStyle = 'rgba(201,168,76,0.15)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(4, 4, W - 8, H - 8);
+  ctx.strokeStyle = 'rgba(201,168,76,0.08)';
+  ctx.strokeRect(7, 7, W - 14, H - 14);
+}
+
+function drawSnake() {
+  const len = snake.length;
+  snake.forEach((seg, i) => {
+    const x = seg.x * GRID;
+    const y = seg.y * GRID;
+    const isHead = i === 0;
+    const isTail = i === len - 1;
+    const t = i / len;
+
+    if (isHead) {
+      drawHead(x, y);
+    } else {
+      drawBodySeg(x, y, i, t, isTail);
+    }
+  });
+}
+
+function drawHead(x, y) {
+  const g = GRID;
+  ctx.save();
+
+  // Traslazione al centro del segmento
+  ctx.translate(x + g/2, y + g/2);
+
+  // Rotazione in base alla direzione
+  let rot = 0;
+  if (dir.x === 1) rot = 0;
+  else if (dir.x === -1) rot = Math.PI;
+  else if (dir.y === 1) rot = Math.PI/2;
+  else rot = -Math.PI/2;
+  ctx.rotate(rot);
+
+  const r = g/2 - 1;
+
+  // Corpo testa
+  ctx.fillStyle = COLORS.snakeHead;
+  ctx.beginPath();
+  ctx.ellipse(0, 0, r + 1, r, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Riflesso
+  ctx.fillStyle = 'rgba(74,158,96,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(-1, -2, r * 0.5, r * 0.3, -0.3, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Scaglie testa
+  ctx.strokeStyle = COLORS.snakeScale;
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(-2 + i * 2, 0, r * 0.4 - i * 1.5, Math.PI * 0.2, Math.PI * 0.8);
+    ctx.stroke();
+  }
+
+  // Occhi
+  [-1, 1].forEach(side => {
+    // Bianco occhio
+    ctx.fillStyle = COLORS.snakeEye;
+    ctx.beginPath();
+    ctx.ellipse(2, side * 3.5, 2.5, 2, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Pupilla verticale (rettile)
+    ctx.fillStyle = '#1a0a00';
+    ctx.beginPath();
+    ctx.ellipse(2.5, side * 3.5, 0.8, 1.8, 0, 0, Math.PI * 2);
+    ctx.fill();
+    // Riflesso
+    ctx.fillStyle = 'rgba(255,255,255,0.6)';
+    ctx.beginPath();
+    ctx.arc(1.8, side * 3.2, 0.7, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // Lingua biforcuta animata
+  const tongueOut = Math.sin(Date.now() * 0.01) > 0.6;
+  if (tongueOut) {
+    ctx.strokeStyle = COLORS.snakeTongue;
+    ctx.lineWidth = 1;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(r - 1, 0);
+    ctx.lineTo(r + 5, 0);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(r + 5, 0);
+    ctx.lineTo(r + 8, -2.5);
+    ctx.moveTo(r + 5, 0);
+    ctx.lineTo(r + 8, 2.5);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+function drawBodySeg(x, y, idx, t, isTail) {
+  const g = GRID;
+  const pad = isTail ? 2 : 1;
+  const w = g - pad * 2;
+  const h = g - pad * 2;
+
+  ctx.save();
+  ctx.translate(x + g/2, y + g/2);
+
+  // Gradiente colore dal corpo alla coda
+  const greenVal = Math.floor(46 + t * 30);
+  ctx.fillStyle = `rgb(${Math.floor(45 - t*15)}, ${greenVal + 70}, ${Math.floor(63 - t*15)})`;
+  const r = isTail ? 3 : 2;
+  roundRect(ctx, -w/2, -h/2, w, h, r);
+  ctx.fill();
+
+  // Scaglie (pattern)
+  if (!isTail && idx % 2 === 0) {
+    ctx.strokeStyle = 'rgba(31,85,48,0.7)';
+    ctx.lineWidth = 0.7;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, w * 0.35, h * 0.28, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(-2, -1, w * 0.18, h * 0.14, 0.3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(2, 1, w * 0.18, h * 0.14, -0.3, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // Riflesso luce
+  ctx.fillStyle = 'rgba(74,158,96,0.18)';
+  ctx.beginPath();
+  ctx.ellipse(-w*0.15, -h*0.2, w * 0.22, h * 0.15, -0.4, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.restore();
+}
+
+function drawFood() {
+  if (!food) return;
+  const t = Date.now() * 0.003;
+  const pulse = (Math.sin(t * 2) + 1) / 2;
+  const x = food.x * GRID + GRID/2;
+  const y = food.y * GRID + GRID/2;
+  const r = GRID/2 - 2 + pulse * 2;
+
+  ctx.save();
+
+  // Alone luminoso
+  const grd = ctx.createRadialGradient(x, y, 0, x, y, r * 2.5);
+  grd.addColorStop(0, COLORS.foodGlow[food.tipo]);
+  grd.addColorStop(1, 'transparent');
+  ctx.fillStyle = grd;
+  ctx.beginPath();
+  ctx.arc(x, y, r * 2.5, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Cerchio principale
+  ctx.fillStyle = COLORS.food[food.tipo];
+  ctx.shadowColor = COLORS.food[food.tipo];
+  ctx.shadowBlur = 8 + pulse * 8;
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+
+  // Simbolo
+  ctx.fillStyle = 'rgba(20,16,10,0.85)';
+  ctx.font = `bold ${Math.floor(GRID * 0.7)}px serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(food.simbolo, x, y + 0.5);
+
+  // Puntini orbitali
+  for (let i = 0; i < 3; i++) {
+    const angle = t * 1.5 + (i * Math.PI * 2 / 3);
+    const ox = x + Math.cos(angle) * (r + 5);
+    const oy = y + Math.sin(angle) * (r + 5);
+    ctx.fillStyle = COLORS.food[food.tipo];
+    ctx.globalAlpha = 0.4;
+    ctx.beginPath();
+    ctx.arc(ox, oy, 1.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  ctx.restore();
+}
+
+// Particelle
+function spawnParticles(x, y, color, count) {
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = Math.random() * 3 + 1;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 1,
+      decay: Math.random() * 0.04 + 0.02,
+      size: Math.random() * 4 + 1,
+      color
+    });
+  }
+}
+
+function updateParticles() {
+  particles = particles.filter(p => p.life > 0);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.08;
+    p.life -= p.decay;
+    p.vx *= 0.98;
+  });
+}
+
+function drawParticles() {
+  particles.forEach(p => {
+    ctx.save();
+    ctx.globalAlpha = p.life;
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color;
+    ctx.shadowBlur = 4;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  });
+}
+
+// Utility
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+let eventoTimeout;
+function mostraEvento(msg) {
+  const el = document.getElementById('evento-msg');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(eventoTimeout);
+  eventoTimeout = setTimeout(() => el.classList.remove('show'), 2000);
+}
+
+// ---- INPUT ----
+
+const DIRS = {
+  ArrowUp:    { x: 0, y: -1 }, w: { x: 0, y: -1 }, W: { x: 0, y: -1 },
+  ArrowDown:  { x: 0, y: 1  }, s: { x: 0, y: 1  }, S: { x: 0, y: 1  },
+  ArrowLeft:  { x: -1, y: 0 }, a: { x: -1, y: 0 }, A: { x: -1, y: 0 },
+  ArrowRight: { x: 1, y: 0  }, d: { x: 1, y: 0  }, D: { x: 1, y: 0  },
+};
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'p' || e.key === 'P' || e.key === 'Escape') {
+    if (!alive) return;
+    togglePausa();
+    return;
+  }
+  const d = DIRS[e.key];
+  if (d && !(d.x === -dir.x && d.y === -dir.y)) {
+    nextDir = d;
+    e.preventDefault();
+  }
+});
+
+function togglePausa() {
+  paused = !paused;
+  if (paused) {
+    document.getElementById('overlay-pause').classList.remove('hidden');
+  } else {
+    document.getElementById('overlay-pause').classList.add('hidden');
+  }
+}
+
+// D-Pad
+document.getElementById('d-up').addEventListener('click',    () => { if (dir.y !== 1)  nextDir = {x:0,y:-1}; });
+document.getElementById('d-down').addEventListener('click',  () => { if (dir.y !== -1) nextDir = {x:0,y:1};  });
+document.getElementById('d-left').addEventListener('click',  () => { if (dir.x !== 1)  nextDir = {x:-1,y:0}; });
+document.getElementById('d-right').addEventListener('click', () => { if (dir.x !== -1) nextDir = {x:1,y:0};  });
+
+// Touch swipe
+let touchStart = null;
+canvas.addEventListener('touchstart', e => { touchStart = e.touches[0]; e.preventDefault(); }, { passive: false });
+canvas.addEventListener('touchend', e => {
+  if (!touchStart) return;
+  const dx = e.changedTouches[0].clientX - touchStart.clientX;
+  const dy = e.changedTouches[0].clientY - touchStart.clientY;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (dx > 20 && dir.x !== -1) nextDir = {x:1,y:0};
+    else if (dx < -20 && dir.x !== 1) nextDir = {x:-1,y:0};
+  } else {
+    if (dy > 20 && dir.y !== -1) nextDir = {x:0,y:1};
+    else if (dy < -20 && dir.y !== 1) nextDir = {x:0,y:-1};
+  }
+  touchStart = null;
+}, { passive: true });
+
+// ---- LOOP VISIVO (per animazioni anche in pausa/start) ----
+function visualLoop() {
+  if (!alive || paused) {
+    // Disegna la schermata anche ferma per animare la lingua e gli orbitali
+    drawFrame();
+  }
+  requestAnimationFrame(visualLoop);
+}
+
+// ---- PULSANTI ----
+document.getElementById('btn-start').addEventListener('click', () => {
+  hiScore = 0;
+  initBg();
+  initGame();
+  document.getElementById('overlay-start').classList.add('hidden');
+  drawFrame();
+  gameLoop = setInterval(step, speed);
+});
+
+document.getElementById('btn-resume').addEventListener('click', () => {
+  paused = false;
+  document.getElementById('overlay-pause').classList.add('hidden');
+});
+
+document.getElementById('btn-restart').addEventListener('click', () => {
+  clearInterval(gameLoop);
+  document.getElementById('overlay-gameover').classList.add('hidden');
+  initGame();
+  drawFrame();
+  gameLoop = setInterval(step, speed);
+});
+
+// Init
+initBg();
+drawFrame();
+visualLoop();
+</script>
+</body>
+</html>
